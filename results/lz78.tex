@@ -124,7 +124,7 @@
 
 \begin{document}
 \begin{tikzpicture}
-\begin{axis}[singlepage, ybarchart, xsys, ylabel={Throughput [MiB/s]}, title={dna.200Mi ($n=\num{209715200}; z=\num{21411874}$)}]
+\begin{axis}[singlepage, ybarchart, xsys, ylabel={Throughput [MiB/s]}, ymin=0, title={dna.200Mi ($n=\num{209715200}; z=\num{21411874}$)}]
 %% MULTIPLOT(algo) SELECT sys_num AS x, (input_size/(1024.0*1024.0))/(MEDIAN(time)/1000.0) AS y, MULTIPLOT
 %% FROM data
 %% GROUP BY MULTIPLOT,x;
