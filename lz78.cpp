@@ -1,8 +1,12 @@
 #include <fstream>
 #include <vector>
 
-#include <lz78/lz78_interface.hpp>
-#include <lz78/lz78_template.hpp>
+#include <lz78/lz78_ii.hpp>
+#include <lz78/lz78_it.hpp>
+#include <lz78/lz78_ti.hpp>
+#include <lz78/lz78_tt.hpp>
+
+#include <lz78/binary_trie.hpp>
 
 #include <util/buffered_reader.hpp>
 #include <util/time.hpp>
@@ -11,7 +15,8 @@
 
 struct {
     std::string filename;
-    bool noop = false;
+    bool dummy_trie = false;
+    bool dummy_consumer = false;
 } options;
 
 struct LZ78ConsumerInline {
@@ -56,13 +61,16 @@ struct LZ78ConsumerVirtual : public ILZ78Consumer {
     }
 };
 
-struct LZ78ConsumerVirtualNoop : public ILZ78Consumer {
-    virtual void consume(const index_t ref, const char_t c) override {
-    }
-    
-    virtual size_t num_factors() const override {
-        return 0;
-    }
+struct DummyLZ78Consumer : public ILZ78Consumer {
+    virtual void consume(const index_t ref, const char_t c) override { }
+    virtual size_t num_factors() const override { return 0; }
+};
+
+struct DummyLZ78Trie : public ILZ78Trie {
+    virtual index_t root() const override { return 0; }
+    virtual index_t get_child(const index_t v, const char_t c) override { return 0; }
+    virtual index_t insert_child(const index_t v, const char_t c) override { return 0; }
+    virtual size_t size() const override { return 0; }
 };
 
 template<typename ctor_t>
@@ -85,7 +93,8 @@ void print_result(std::string&& name, const size_t num_factors, const uint64_t d
 int main(int argc, char** argv) {
     tlx::CmdlineParser cp;
     cp.add_param_string("file", options.filename, "The input file.");
-    cp.add_flag('N', "noop", options.noop, "Internal use only.");
+    cp.add_flag('X', "dummy_trie", options.dummy_trie, "Internal use only.");
+    cp.add_flag('Y', "dummy_consumer", options.dummy_consumer, "Internal use only.");
     
     if(!cp.process(argc, argv)) {
         return -1;
@@ -100,32 +109,65 @@ int main(int argc, char** argv) {
         std::cout << "file chksum=" << chksum << std::endl;
     }
     
-    // template, inline
+    // trie template, consumer template (TT)
     {
         LZ78ConsumerInline consumer;
-        const auto dt = bench([&](){ return LZ78Template(consumer); });
-        print_result("TemplateInline", consumer.num_factors(), dt);
+        const auto dt = bench([&](){ return LZ78_TT<BinaryTrie_Inline, decltype(consumer)>(consumer); });
+        print_result("TT", consumer.num_factors(), dt);
     }
 
-    // template, noinline
-    {
-        LZ78ConsumerNoInline consumer;
-        const auto dt = bench([&](){ return LZ78Template(consumer); });
-        print_result("TemplateNoInline", consumer.num_factors(), dt);
-    }
-    
-    // interface (virtual calls)
+    // trie template, consumer interface (TI)
     {
         ILZ78Consumer* consumer;
-        if(options.noop) {
-            consumer = new LZ78ConsumerVirtualNoop();
+        if(options.dummy_consumer) {
+            consumer = new DummyLZ78Consumer();
             std::cout << "you shouldn't actually use this flag, we just want to make sure that the consumer type is determined at runtime!" << std::endl;
         } else {
             consumer = new LZ78ConsumerVirtual();
         }
         
-        const auto dt = bench([&](){ return LZ78Interface(consumer); });
-        print_result("Interface", consumer->num_factors(), dt);
+        const auto dt = bench([&](){ return LZ78_TI<BinaryTrie_Inline>(consumer); });
+        print_result("TI", consumer->num_factors(), dt);
         delete consumer;
+    }
+    
+    // trie interface, consumer template (IT)
+    {
+        LZ78ConsumerInline consumer;
+        ILZ78Trie* trie;
+        if(options.dummy_trie) {
+            trie = new DummyLZ78Trie();
+            std::cout << "you shouldn't actually use this flag, we just want to make sure that the consumer type is determined at runtime!" << std::endl;
+        } else {
+            trie = new BinaryTrie_Interface();
+        }
+        
+        const auto dt = bench([&](){ return LZ78_IT<decltype(consumer)>(trie, consumer); });
+        print_result("IT", consumer.num_factors(), dt);
+        delete trie;
+    }
+
+    // trie interface, consumer interface (II)
+    {
+        ILZ78Consumer* consumer;
+        if(options.dummy_consumer) {
+            consumer = new DummyLZ78Consumer();
+            std::cout << "you shouldn't actually use this flag, we just want to make sure that the consumer type is determined at runtime!" << std::endl;
+        } else {
+            consumer = new LZ78ConsumerVirtual();
+        }
+        
+        ILZ78Trie* trie;
+        if(options.dummy_trie) {
+            trie = new DummyLZ78Trie();
+            std::cout << "you shouldn't actually use this flag, we just want to make sure that the consumer type is determined at runtime!" << std::endl;
+        } else {
+            trie = new BinaryTrie_Interface();
+        }
+        
+        const auto dt = bench([&](){ return LZ78_II(trie, consumer); });
+        print_result("II", consumer->num_factors(), dt);
+        delete consumer;
+        delete trie;
     }
 }
