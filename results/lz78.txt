@@ -1,0 +1,39 @@
+# --- dna.200Mi on flint ---
+
+# iteration 1
+RESULT sys=flint algo=TT input=dna.200Mi input_size=209715200, num_factors=21411874 time=22455
+RESULT sys=flint algo=TI input=dna.200Mi input_size=209715200, num_factors=21411874 time=22353
+RESULT sys=flint algo=IT input=dna.200Mi input_size=209715200, num_factors=21411874 time=22678
+RESULT sys=flint algo=II input=dna.200Mi input_size=209715200, num_factors=21411874 time=23002
+
+# iteration 2
+RESULT sys=flint algo=TT input=dna.200Mi input_size=209715200, num_factors=21411874 time=22515
+RESULT sys=flint algo=TI input=dna.200Mi input_size=209715200, num_factors=21411874 time=22402
+RESULT sys=flint algo=IT input=dna.200Mi input_size=209715200, num_factors=21411874 time=22719
+RESULT sys=flint algo=II input=dna.200Mi input_size=209715200, num_factors=21411874 time=22852
+
+# iteration 3
+RESULT sys=flint algo=TT input=dna.200Mi input_size=209715200, num_factors=21411874 time=22282
+RESULT sys=flint algo=TI input=dna.200Mi input_size=209715200, num_factors=21411874 time=22078
+RESULT sys=flint algo=IT input=dna.200Mi input_size=209715200, num_factors=21411874 time=22552
+RESULT sys=flint algo=II input=dna.200Mi input_size=209715200, num_factors=21411874 time=22763
+
+# --- dna.200Mi on cstd01 ---
+
+# iteration 1
+RESULT sys=cstd01 algo=TT input=/work/smpadink/datasets/pc/dna.200Mi input_size=209715200, num_factors=16373735 time=14829
+RESULT sys=cstd01 algo=TI input=/work/smpadink/datasets/pc/dna.200Mi input_size=209715200, num_factors=16373735 time=14788
+RESULT sys=cstd01 algo=IT input=/work/smpadink/datasets/pc/dna.200Mi input_size=209715200, num_factors=16373735 time=15267
+RESULT sys=cstd01 algo=II input=/work/smpadink/datasets/pc/dna.200Mi input_size=209715200, num_factors=16373735 time=15356
+
+# iteration 2
+RESULT sys=cstd01 algo=TT input=/work/smpadink/datasets/pc/dna.200Mi input_size=209715200, num_factors=16373735 time=14941
+RESULT sys=cstd01 algo=TI input=/work/smpadink/datasets/pc/dna.200Mi input_size=209715200, num_factors=16373735 time=14841
+RESULT sys=cstd01 algo=IT input=/work/smpadink/datasets/pc/dna.200Mi input_size=209715200, num_factors=16373735 time=15399
+RESULT sys=cstd01 algo=II input=/work/smpadink/datasets/pc/dna.200Mi input_size=209715200, num_factors=16373735 time=15357
+
+# iteration 3
+RESULT sys=cstd01 algo=TT input=/work/smpadink/datasets/pc/dna.200Mi input_size=209715200, num_factors=16373735 time=14963
+RESULT sys=cstd01 algo=TI input=/work/smpadink/datasets/pc/dna.200Mi input_size=209715200, num_factors=16373735 time=14875
+RESULT sys=cstd01 algo=IT input=/work/smpadink/datasets/pc/dna.200Mi input_size=209715200, num_factors=16373735 time=15347
+RESULT sys=cstd01 algo=II input=/work/smpadink/datasets/pc/dna.200Mi input_size=209715200, num_factors=16373735 time=15352
