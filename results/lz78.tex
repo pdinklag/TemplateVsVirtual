@@ -101,9 +101,9 @@
     },
     xsys/.style={
         xmin=0.5,
-        xmax=2.5,
-        xtick={1,2},
-        xticklabels={flint, cstd01}
+        xmax=3.5,
+        xtick={1,2,3},
+        xticklabels={flint, cstd01, snail04}
     },
 }
 
@@ -112,7 +112,7 @@
 \usetikzlibrary{matrix}
 \usetikzlibrary{positioning}
 
-% IMPORT-DATA data data.txt
+% IMPORT-DATA data lz78.txt
 
 %% SQL ALTER TABLE data ADD COLUMN sys_num INTEGER;
 
@@ -120,19 +120,21 @@
 
 %% SQL UPDATE data SET sys_num=2 WHERE sys="cstd01";
 
+%% SQL UPDATE data SET sys_num=3 WHERE sys="snail04";
+
 \begin{document}
 \begin{tikzpicture}
 \begin{axis}[singlepage, ybarchart, xsys, ylabel={Throughput [MiB/s]}, title={dna.200Mi ($n=\num{209715200}; z=\num{21411874}$)}]
 %% MULTIPLOT(algo) SELECT sys_num AS x, (input_size/(1024.0*1024.0))/(MEDIAN(time)/1000.0) AS y, MULTIPLOT
 %% FROM data
 %% GROUP BY MULTIPLOT,x;
-\addplot coordinates { (1,8.75197) (2,13.0242) };
+\addplot coordinates { (1,8.75197) (2,13.0242) (3,11.3941) };
 \addlegendentry{algo=II};
-\addplot coordinates { (1,8.81912) (2,13.0319) };
+\addplot coordinates { (1,8.81912) (2,13.0319) (3,11.2911) };
 \addlegendentry{algo=IT};
-\addplot coordinates { (1,8.94734) (2,13.4762) };
+\addplot coordinates { (1,8.94734) (2,13.4762) (3,11.6158) };
 \addlegendentry{algo=TI};
-\addplot coordinates { (1,8.9067) (2,13.386) };
+\addplot coordinates { (1,8.9067) (2,13.386) (3,11.7288) };
 \addlegendentry{algo=TT};
 \end{axis}
 \end{tikzpicture}

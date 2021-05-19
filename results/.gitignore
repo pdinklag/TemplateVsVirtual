@@ -1,0 +1,19 @@
+# LaTeX artifacts
+*.aux
+*.auxlock
+*.bbl
+*.blg
+*.dvi
+*.loa
+*.lof
+*.log
+*.md5
+*.out
+*.synctex.gz
+*.thm
+*.toc
+
+# latexmk
+*.fdb_latexmk
+*.fls
+*.vtc

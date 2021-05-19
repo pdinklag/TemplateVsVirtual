@@ -8,10 +8,11 @@ This repository contains benchmarks to test performance differences of choosing 
 
 These are the systems we ran the benchmark on. We compiled the code using *g++ 10.3.0* on all systems using the `-O3` flag for optimizations (CMake `Release` build).
 
-| System | CPU                             | Frequency [GHz] | L1 [K] | L2 [K] | L3 [K] |
-| ------ | ------------------------------- | --------------- | ------ | ------ | ------ |
-| flint  | Intel(R) Core(TM) i7-8700       | 3.20            | 32     | 256    | 12288  |
-| cstd01 | Intel(R) Xeon(R) CPU E5-2640 v4 | 2.40            | 32     | 256    | 25600  |
+| System  | CPU                             | Frequency [GHz] | L1 [K] | L2 [K] | L3 [K] |
+| ------- | ------------------------------- | --------------- | ------ | ------ | ------ |
+| flint   | Intel(R) Core(TM) i7-8700       | 3.20            | 32     | 256    | 12,288 |
+| cstd01  | Intel(R) Xeon(R) CPU E5-2640 v4 | 2.40            | 32     | 256    | 25,600 |
+| snail04 | AMD EPYC 7452                   | 2.35            | 32     | 512    | 16,384 |
 
 ## LZ78 Compression
 
@@ -28,9 +29,9 @@ Note that in the case of interface usage, the vtables are very small: the consum
 | Code | LZ78 Trie          | LZ78 Consumer      | Virtual Method Invocations |
 | ---- | ------------------ | ------------------ | -------------------------- |
 | TT   | Template Parameter | Template Parameter | 0                          |
-| TI   | Template Parameter | Interface          | *Θ(Z)*                     |
+| TI   | Template Parameter | Interface          | *Z*                        |
 | IT   | Interface          | Template Parameter | *Θ(N)*                     |
-| II   | Interface          | Interface          | *Θ(N+Z)*                   |
+| II   | Interface          | Interface          | *Θ(N) + Z*                 |
 
 ### Input File
 

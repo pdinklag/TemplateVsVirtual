@@ -37,3 +37,23 @@ RESULT sys=cstd01 algo=TT input=dna.200Mi input_size=209715200, num_factors=1637
 RESULT sys=cstd01 algo=TI input=dna.200Mi input_size=209715200, num_factors=16373735 time=14875
 RESULT sys=cstd01 algo=IT input=dna.200Mi input_size=209715200, num_factors=16373735 time=15347
 RESULT sys=cstd01 algo=II input=dna.200Mi input_size=209715200, num_factors=16373735 time=15352
+
+# --- dna.200Mi on snail04 ---
+
+# iteration 1
+RESULT sys=snail04 algo=TT input=dna.200Mi input_size=209715200, num_factors=16373735 time=17208
+RESULT sys=snail04 algo=TI input=dna.200Mi input_size=209715200, num_factors=16373735 time=17001
+RESULT sys=snail04 algo=IT input=dna.200Mi input_size=209715200, num_factors=16373735 time=17764
+RESULT sys=snail04 algo=II input=dna.200Mi input_size=209715200, num_factors=16373735 time=17626
+
+# iteration 2
+RESULT sys=snail04 algo=TT input=dna.200Mi input_size=209715200, num_factors=16373735 time=16989
+RESULT sys=snail04 algo=TI input=dna.200Mi input_size=209715200, num_factors=16373735 time=17218
+RESULT sys=snail04 algo=IT input=dna.200Mi input_size=209715200, num_factors=16373735 time=17669
+RESULT sys=snail04 algo=II input=dna.200Mi input_size=209715200, num_factors=16373735 time=17553
+
+# iteration 3
+RESULT sys=snail04 algo=TT input=dna.200Mi input_size=209715200, num_factors=16373735 time=17052
+RESULT sys=snail04 algo=TI input=dna.200Mi input_size=209715200, num_factors=16373735 time=17242
+RESULT sys=snail04 algo=IT input=dna.200Mi input_size=209715200, num_factors=16373735 time=17713
+RESULT sys=snail04 algo=II input=dna.200Mi input_size=209715200, num_factors=16373735 time=17387
