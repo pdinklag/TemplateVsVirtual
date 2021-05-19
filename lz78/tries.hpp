@@ -130,3 +130,10 @@ public:
         return new_child;
     }
 };
+
+struct LZ78Trie_Dummy : public ILZ78Trie {
+    virtual index_t root() const override { return 0; }
+    virtual index_t get_child(const index_t v, const char_t c) override { return 0; }
+    virtual index_t insert_child(const index_t v, const char_t c) override { return 0; }
+    virtual size_t size() const override { return 0; }
+};

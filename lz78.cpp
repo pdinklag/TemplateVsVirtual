@@ -6,7 +6,8 @@
 #include <lz78/lz78_ti.hpp>
 #include <lz78/lz78_tt.hpp>
 
-#include <lz78/binary_trie.hpp>
+#include <lz78/consumers.hpp>
+#include <lz78/tries.hpp>
 
 #include <util/buffered_reader.hpp>
 #include <util/time.hpp>
@@ -18,60 +19,6 @@ struct {
     bool dummy_trie = false;
     bool dummy_consumer = false;
 } options;
-
-struct LZ78ConsumerInline {
-    std::vector<index_t> refs;
-    std::vector<char_t> chars;
-    
-    inline void consume(const index_t ref, const char_t c) {
-        refs.emplace_back(ref);
-        chars.emplace_back(c);
-    }
-    
-    inline size_t num_factors() const {
-        return refs.size();
-    }
-};
-
-struct LZ78ConsumerNoInline {
-    std::vector<index_t> refs;
-    std::vector<char_t> chars;
-    
-    void __attribute__((noinline)) consume(const index_t ref, const char_t c) {
-        refs.emplace_back(ref);
-        chars.emplace_back(c);
-    }
-    
-    size_t __attribute__((noinline)) num_factors() const {
-        return refs.size();
-    }
-};
-
-struct LZ78ConsumerVirtual : public ILZ78Consumer {
-    std::vector<index_t> refs;
-    std::vector<char_t> chars;
-    
-    virtual void consume(const index_t ref, const char_t c) override {
-        refs.emplace_back(ref);
-        chars.emplace_back(c);
-    }
-    
-    virtual size_t num_factors() const override {
-        return refs.size();
-    }
-};
-
-struct DummyLZ78Consumer : public ILZ78Consumer {
-    virtual void consume(const index_t ref, const char_t c) override { }
-    virtual size_t num_factors() const override { return 0; }
-};
-
-struct DummyLZ78Trie : public ILZ78Trie {
-    virtual index_t root() const override { return 0; }
-    virtual index_t get_child(const index_t v, const char_t c) override { return 0; }
-    virtual index_t insert_child(const index_t v, const char_t c) override { return 0; }
-    virtual size_t size() const override { return 0; }
-};
 
 template<typename ctor_t>
 uint64_t bench(ctor_t ctor) {
@@ -111,7 +58,7 @@ int main(int argc, char** argv) {
     
     // trie template, consumer template (TT)
     {
-        LZ78ConsumerInline consumer;
+        LZ78Consumer_Inline consumer;
         const auto dt = bench([&](){ return LZ78_TT<BinaryTrie_Inline, decltype(consumer)>(consumer); });
         print_result("TT", consumer.num_factors(), dt);
     }
@@ -120,10 +67,10 @@ int main(int argc, char** argv) {
     {
         ILZ78Consumer* consumer;
         if(options.dummy_consumer) {
-            consumer = new DummyLZ78Consumer();
-            std::cout << "you shouldn't actually use this flag, we just want to make sure that the consumer type is determined at runtime!" << std::endl;
+            consumer = new LZ78Consumer_Dummy();
+            std::cout << "you shouldn't actually use this flag, we just want to make sure that the type is determined at runtime!" << std::endl;
         } else {
-            consumer = new LZ78ConsumerVirtual();
+            consumer = new LZ78Consumer_Interface();
         }
         
         const auto dt = bench([&](){ return LZ78_TI<BinaryTrie_Inline>(consumer); });
@@ -133,11 +80,11 @@ int main(int argc, char** argv) {
     
     // trie interface, consumer template (IT)
     {
-        LZ78ConsumerInline consumer;
+        LZ78Consumer_Inline consumer;
         ILZ78Trie* trie;
         if(options.dummy_trie) {
-            trie = new DummyLZ78Trie();
-            std::cout << "you shouldn't actually use this flag, we just want to make sure that the consumer type is determined at runtime!" << std::endl;
+            trie = new LZ78Trie_Dummy();
+            std::cout << "you shouldn't actually use this flag, we just want to make sure that the type is determined at runtime!" << std::endl;
         } else {
             trie = new BinaryTrie_Interface();
         }
@@ -151,16 +98,16 @@ int main(int argc, char** argv) {
     {
         ILZ78Consumer* consumer;
         if(options.dummy_consumer) {
-            consumer = new DummyLZ78Consumer();
-            std::cout << "you shouldn't actually use this flag, we just want to make sure that the consumer type is determined at runtime!" << std::endl;
+            consumer = new LZ78Consumer_Dummy();
+            std::cout << "you shouldn't actually use this flag, we just want to make sure that the type is determined at runtime!" << std::endl;
         } else {
-            consumer = new LZ78ConsumerVirtual();
+            consumer = new LZ78Consumer_Interface();
         }
         
         ILZ78Trie* trie;
         if(options.dummy_trie) {
-            trie = new DummyLZ78Trie();
-            std::cout << "you shouldn't actually use this flag, we just want to make sure that the consumer type is determined at runtime!" << std::endl;
+            trie = new LZ78Trie_Dummy();
+            std::cout << "you shouldn't actually use this flag, we just want to make sure that the type is determined at runtime!" << std::endl;
         } else {
             trie = new BinaryTrie_Interface();
         }
