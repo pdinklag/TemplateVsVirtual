@@ -16,6 +16,8 @@
 
 struct {
     std::string filename;
+    size_t file_size;
+    
     bool dummy_trie = false;
     bool dummy_consumer = false;
 } options;
@@ -34,7 +36,7 @@ uint64_t bench(ctor_t ctor) {
 }
 
 void print_result(std::string&& name, const size_t num_factors, const uint64_t dt) {
-    std::cout << "RESULT algo=" << name << " input=" << options.filename << " num_factors=" << num_factors << " time=" << dt << std::endl;
+    std::cout << "RESULT algo=" << name << " input=" << options.filename << " input_size=" << options.file_size << ", num_factors=" << num_factors << " time=" << dt << std::endl;
 }
 
 int main(int argc, char** argv) {
@@ -52,7 +54,8 @@ int main(int argc, char** argv) {
         std::ifstream in(options.filename);
         BufferedReader<char_t> r(in, 1024 * 1024 * 1024);
         uint64_t chksum = 0;
-        while(r) chksum += r.read();
+        options.file_size = 0;
+        while(r) { chksum += r.read(); ++options.file_size; }
         std::cout << "file chksum=" << chksum << std::endl;
     }
     
