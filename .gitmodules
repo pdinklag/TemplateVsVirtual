@@ -1,3 +1,6 @@
 [submodule "extlib/tlx"]
 	path = extlib/tlx
 	url = https://github.com/tlx/tlx
+[submodule "extlib/libdivsufsort"]
+	path = extlib/libdivsufsort
+	url = https://github.com/y-256/libdivsufsort

@@ -40,3 +40,28 @@ We choose the 200 MiB prefix of the *dna* text from the [Pizza & Chili Corpus](h
 ### Results
 
 The results are given as median throughputs over three iterations can be viewn in [results/lz78.pdf](results/lz78.pdf). The raw data is listed in [results/lz78.txt](results/lz78.txt).
+
+## Burrows-Wheeler Transform
+
+In the second use case, we compute the Burrows-Wheeler Transform (BWT) of an input file using its suffix array.
+
+We access the suffix array entries indirectly via a class that overloads the `[]` operator - in practice, to name an example, this may be necessary if we use a sparse suffix array and don't store all the entries explicitly. Furthermore, the BWT is constructed step-by-step using a `push_back` operation.
+
+Let *N* be the number of input characters. Then, in this use case, there are exactly *N* random suffix array accesses and exactly *N* pushes to the BWT in left-to-right order.
+
+Both the suffix array and the BWT builder implementations are passed either as template parameters &ndash; allowing for compile-time optimizations &ndash; or as pointers to interface instances &ndash; requiring vtable lookups for each call. Like for [LZ78 Compression](#lz78-compression), the vtables are very small.
+
+| Code | Suffix Array Accessor | BWT Builder        | Virtual Method Invocations |
+| ---- | --------------------- | ------------------ | -------------------------- |
+| TT   | Template Parameter    | Template Parameter | 0                          |
+| TI   | Template Parameter    | Interface          | *N*                        |
+| IT   | Interface             | Template Parameter | *N*                        |
+| II   | Interface             | Interface          | *2N*                       |
+
+### Input File
+
+We choose the 200 MiB prefix of the *dna* text from the [Pizza & Chili Corpus](http://pizzachili.dcc.uchile.cl/), and thus we have *N=209,715,200*.
+
+### Results
+
+The results are given as median throughputs over three iterations can be viewn in [results/bwt.pdf](results/bwt.pdf). The raw data is listed in [results/bwt.txt](results/bwt.txt).

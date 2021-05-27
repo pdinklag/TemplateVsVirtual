@@ -44,9 +44,16 @@ include(InitSubmodules)
 add_subdirectory(${EXTLIB_SOURCE_DIR}/tlx)
 include_directories(${EXTLIB_SOURCE_DIR}/tlx)
 
+set(BUILD_EXAMPLES OFF) # libdivsufsort examples include a target named "bwt", conflicting with ours
+add_subdirectory(${EXTLIB_SOURCE_DIR}/libdivsufsort)
+include_directories(${EXTLIB_SOURCE_DIR}/libdivsufsort/include)
+
 # include
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 # benchmarks
 add_executable(lz78 lz78.cpp)
 target_link_libraries(lz78 tlx)
+
+add_executable(bwt bwt.cpp)
+target_link_libraries(bwt tlx divsufsort)
