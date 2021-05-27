@@ -1,0 +1,141 @@
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\documentclass[tikz]{standalone}
+\usepackage[utf8]{inputenc}
+
+% Colors
+%\usepackage[dvipsnames]{xcolor}
+
+% Maths
+\usepackage{amsfonts}
+\usepackage{mathtools}
+
+% SI units
+\usepackage{siunitx}
+\DeclareSIUnit\persecond{/s}
+\sisetup{group-separator={,}}
+\sisetup{group-four-digits}
+
+% TikZ + pgfplots
+\usepackage{tikz,pgfplots}
+\usepgfplotslibrary{groupplots}
+
+% pgfplots colors
+\pgfplotscreateplotcyclelist{mycolors}{
+    Red, every mark/.append style={solid,scale=0.8}, mark=x \\
+    NavyBlue, every mark/.append style={solid,scale=0.9}, mark=+ \\
+    ForestGreen, every mark/.append style={solid,scale=0.8}, mark=o \\
+    Cyan, every mark/.append style={solid,scale=0.8}, mark=triangle \\
+    Plum, every mark/.append style={solid,scale=0.9}, mark=square \\
+    BurntOrange, every mark/.append style={solid,scale=0.9}, mark=diamond \\
+    RoyalPurple, every mark/.append style={solid,scale=0.8}, mark=x \\
+    Sepia, every mark/.append style={solid,scale=0.9}, mark=+ \\
+    JungleGreen, every mark/.append style={solid,scale=0.8}, mark=o \\
+    Gray, every mark/.append style={solid,scale=0.8}, mark=triangle \\
+    RubineRed, every mark/.append style={solid,scale=0.9}, mark=square \\
+    Brown, every mark/.append style={solid,scale=0.9}, mark=diamond \\
+    Dandelion, every mark/.append style={solid,scale=0.9}, mark=x \\
+    Green, every mark/.append style={solid,scale=0.9}, mark=+ \\
+    Black, every mark/.append style={solid,scale=0.9}, mark=o \\
+}
+
+\pgfplotscreateplotcyclelist{barcolors}{
+    black, fill=Red \\
+    black, fill=NavyBlue \\
+    black, fill=ForestGreen \\
+    black, fill=Cyan \\
+    black, fill=Plum \\
+    black, fill=BurntOrange \\
+    black, fill=RoyalPurple \\
+    black, fill=Sepia \\
+    black, fill=JungleGreen \\
+    black, fill=Gray \\
+    black, fill=RubineRed \\
+    black, fill=Brown \\
+    black, fill=Dandelion \\
+    black, fill=Green \\
+    black, fill=Black \\
+}
+
+\pgfplotsset{
+    compat=newest,
+    major grid style={thin,dotted=black!50},
+    minor grid style={thin,dotted,color=black!50},
+    grid,
+    xlabel near ticks,
+    ylabel near ticks,
+    every tick label/.append style={font=\scriptsize},
+    every axis label/.style={font=\scriptsize},
+    y tick label style={
+        xshift=0.5ex,
+    },
+    x label style={
+        yshift=0.5ex,
+    },
+    y label style={
+        yshift=-0.5ex,
+    },
+    title style={
+        % font=\scriptsize\bfseries,
+        % yshift=-1.5ex,
+    },
+    legend cell align={left},
+    legend columns=2,
+    legend style={
+        inner sep=0.125ex,
+        outer sep=0,
+        column sep=0,
+        font=\scriptsize,
+        anchor=north,
+        /tikz/every even column/.append style={column sep=3mm,black},
+        /tikz/every odd column/.append style={black},
+        at={(0.5,-0.125)},
+    },
+    singlepage/.style={
+        width=600pt,
+        height=300pt,
+    },
+    ybarchart/.style={
+        ybar,
+        bar width=12pt,
+        cycle list name={barcolors},
+    },
+    xsys/.style={
+        xmin=0.5,
+        xmax=3.5,
+        xtick={1,2,3},
+        xticklabels={flint, cstd01, snail04}
+    },
+}
+
+\usetikzlibrary{arrows}
+\usetikzlibrary{fit}
+\usetikzlibrary{matrix}
+\usetikzlibrary{positioning}
+
+% IMPORT-DATA data bwt.txt
+
+%% SQL ALTER TABLE data ADD COLUMN sys_num INTEGER;
+
+%% SQL UPDATE data SET sys_num=1 WHERE sys="flint";
+
+%% SQL UPDATE data SET sys_num=2 WHERE sys="cstd01";
+
+%% SQL UPDATE data SET sys_num=3 WHERE sys="snail04";
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[singlepage, ybarchart, xsys, ylabel={Throughput [MiB/s]}, ymin=0, title={dna.200Mi ($n=\num{209715200}$)}]
+%% MULTIPLOT(algo) SELECT sys_num AS x, (input_size/(1024.0*1024.0))/(MEDIAN(time)/1000.0) AS y, MULTIPLOT
+%% FROM data
+%% GROUP BY MULTIPLOT,x;
+\addplot coordinates { (1,41.0762) (2,30.6796) (3,24.731) };
+\addlegendentry{algo=II};
+\addplot coordinates { (1,54.9602) (2,42.0698) (3,37.0302) };
+\addlegendentry{algo=IT};
+\addplot coordinates { (1,48.4614) (2,36.4299) (3,30.1023) };
+\addlegendentry{algo=TI};
+\addplot coordinates { (1,71.1997) (2,56.899) (3,54.5554) };
+\addlegendentry{algo=TT};
+\end{axis}
+\end{tikzpicture}
+\end{document}
