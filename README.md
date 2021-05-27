@@ -51,6 +51,8 @@ Let *N* be the number of input characters. Then, in this use case, there are exa
 
 Both the suffix array and the BWT builder implementations are passed either as template parameters &ndash; allowing for compile-time optimizations &ndash; or as pointers to interface instances &ndash; requiring vtable lookups for each call. Like for [LZ78 Compression](#lz78-compression), the vtables are very small.
 
+The suffix array for the input file is precomputed once and not included in the time measurements.
+
 | Code | Suffix Array Accessor | BWT Builder        | Virtual Method Invocations |
 | ---- | --------------------- | ------------------ | -------------------------- |
 | TT   | Template Parameter    | Template Parameter | 0                          |
