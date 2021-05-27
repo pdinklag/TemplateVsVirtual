@@ -41,6 +41,8 @@ We choose the 200 MiB prefix of the *dna* text from the [Pizza & Chili Corpus](h
 
 The results are given as median throughputs over three iterations can be viewn in [results/lz78.pdf](results/lz78.pdf). The raw data is listed in [results/lz78.txt](results/lz78.txt).
 
+![results/lz78.png](results/lz78.png)
+
 ## Burrows-Wheeler Transform
 
 In the second use case, we compute the Burrows-Wheeler Transform (BWT) of an input file using its suffix array.
@@ -67,3 +69,5 @@ We choose the 200 MiB prefix of the *dna* text from the [Pizza & Chili Corpus](h
 ### Results
 
 The results are given as median throughputs over three iterations can be viewn in [results/bwt.pdf](results/bwt.pdf). The raw data is listed in [results/bwt.txt](results/bwt.txt).
+
+![results/bwt.png](results/bwt.png)
